@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viviana Suárez | Consolidemos el Futuro</title>
+    
+    <!-- Tipografías Premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js para Visualización de Datos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Iconografía Profesional (Lucide) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        muisca: {
+                            green: '#1B4D3E',    // Profundidad territorial
+                            terra: '#C65D3B',    // Fuerza de la tierra
+                            cream: '#F5F0E6',    // Elegancia y base
+                            gold: '#D4A855',     // Sabiduría y luz
+                            dark: '#0F261F',     // Contraste profundo
+                            slate: '#4A5568'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Source Sans Pro"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 550px;
+            margin: auto;
+            height: 400px;
+        }
+
+        .glass-nav {
+            background: rgba(27, 77, 62, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-bg {
+            background-color: #1B4D3E;
+            background-image: radial-gradient(circle at 2px 2px, rgba(212, 168, 85, 0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #D4A855, transparent);
+        }
+
+        /* Animaciones */
+        .reveal { opacity: 0; transform: translateY(20px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .portrait-frame {
+            position: relative;
+            border: 1px solid rgba(212, 168, 85, 0.3);
+            padding: 15px;
+        }
+        .portrait-frame::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 40px;
+            height: 40px;
+            border-top: 2px solid #D4A855;
+            border-left: 2px solid #D4A855;
+        }
+
+        .image-card {
+            overflow: hidden;
+            border-radius: 4px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .image-card:hover img { transform: scale(1.05); }
+    </style>
+
+    <!-- 
+    <!-- Chosen Palette: Muisca Institucional Premium -->
+    <!-- Application Structure Plan:
+         - SPA con navegación fluida y secciones de alto impacto visual.
+         - Hero Section: Enfoque en el eslogan "Armonía es autonomía" y la imagen principal image_7a6b08.png.
+         - Trayectoria: Resumen académico y profesional de Viviana con iconografía Lucide.
+         - Plan de Gobierno: Representación radial de los 7 ejes programáticos para mostrar equilibrio de gestión.
+         - Footer: Call to action final actualizado a "Consolidemos el futuro".
+    -->
+    <!-- Visualization & Content Choices:
+         - Radar Chart (Chart.js): Visualización técnica del balance del plan de gobierno.
+         - Lucide Icons: Sustitución total de emojis para mantener el tono académico y profesional.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    -->
+</head>
+<body class="bg-muisca-cream text-muisca-dark font-sans leading-relaxed selection:bg-muisca-gold selection:text-white">
+
+    <!-- NAVIGATION -->
+    <nav class="fixed w-full z-50 glass-nav text-white border-b border-white/10 transition-all duration-300">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-muisca-gold rounded-full flex items-center justify-center">
+                    <i data-lucide="shield" class="text-muisca-green w-4 h-4"></i>
+                </div>
+                <span class="font-serif font-bold text-xl tracking-tighter uppercase">Viviana Suárez</span>
+            </div>
+            
+            <div class="hidden md:flex space-x-10 text-[11px] font-bold tracking-[0.2em] uppercase">
+                <a href="#inicio" class="hover:text-muisca-gold transition-colors">Inicio</a>
+                <a href="#vision" class="hover:text-muisca-gold transition-colors">Trayectoria</a>
+                <a href="#plan" class="hover:text-muisca-gold transition-colors">Plan de Gobierno</a>
+                <a href="#galeria" class="hover:text-muisca-gold transition-colors">Territorio</a>
+                <a href="#documentos" class="hover:text-muisca-gold transition-colors">Documentos</a>
+                <a href="#voto" class="bg-muisca-terra px-5 py-2 rounded-sm hover:bg-muisca-terra/90 transition-all">Votar 2026</a>
+            </div>
+
+            <button class="md:hidden" onclick="toggleMenu()"><i data-lucide="menu"></i></button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="inicio" class="hero-bg min-h-screen flex items-center text-white relative pt-20">
+        <div class="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+            <div class="space-y-8 animate-fade-in order-2 md:order-1">
+                <div class="inline-flex items-center space-x-4 text-muisca-gold">
+                    <span class="h-px w-12 bg-muisca-gold"></span>
+                    <span class="uppercase tracking-[0.4em] text-[10px] font-bold">Gobernadora Indígena 2026</span>
+                </div>
+                <h1 class="font-serif text-6xl md:text-8xl font-bold leading-none">
+                    Armonía es <br>
+                    <span class="italic text-muisca-gold">autonomía.</span>
+                </h1>
+                <p class="text-lg md:text-xl font-light opacity-80 max-w-lg leading-relaxed border-l border-muisca-gold/30 pl-6">
+                    Una propuesta cimentada en la experiencia institucional y el respeto profundo a la Ley de Origen.
+                </p>
+                <div class="flex flex-wrap gap-6 pt-6">
+                    <a href="#plan" class="bg-muisca-terra hover:bg-red-700 text-white px-12 py-4 font-bold rounded-sm shadow-2xl transition-all transform hover:-translate-y-1 text-sm tracking-widest uppercase">
+                        Ver Propuestas
+                    </a>
+                    <a href="https://raw.githubusercontent.com/viviana-suarez/gobernadora_2026/main/plan-gobierno-viviana-suarez.docx"
+                       download
+                       class="group flex items-center space-x-3 border-2 border-muisca-gold text-muisca-gold hover:bg-muisca-gold hover:text-muisca-dark px-8 py-4 font-bold rounded-sm shadow-xl transition-all transform hover:-translate-y-1 text-xs tracking-widest uppercase">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span>Plan de Gobierno</span>
+                    </a>
+                    <a href="#vision" class="group flex items-center space-x-4 text-white font-bold tracking-widest text-xs uppercase">
+                        <span>Conoce a Viviana</span>
+                        <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-muisca-gold group-hover:border-muisca-gold transition-all">
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- IMAGEN PRINCIPAL (image_7a6b08.png) -->
+            <div class="relative order-1 md:order-2 flex justify-center md:justify-end">
+                <div class="portrait-frame w-full max-w-sm md:max-w-md shadow-2xl">
+                    <div class="aspect-[3/4] bg-muisca-dark overflow-hidden relative group">
+                        <img src="fotos/Portada1.jpeg"
+                             alt="Sandra Viviana Suárez Miranda"
+                             onerror="this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800'"
+                             class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-muisca-green/80 via-transparent to-transparent opacity-60"></div>
+                        <div class="absolute bottom-6 left-6 right-6">
+                            <p class="text-[10px] tracking-[0.3em] uppercase text-muisca-gold font-bold mb-1">Candidata Oficial</p>
+                            <p class="font-serif text-2xl font-semibold">Sandra Viviana Suárez</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRAYECTORIA Y PERFIL -->
+    <section id="vision" class="py-24 bg-white reveal">
+        <div class="container mx-auto px-6">
+            <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-20 items-center">
+                <div class="space-y-8">
+                    <div class="inline-block px-4 py-1 bg-muisca-cream text-muisca-green text-[10px] font-bold tracking-widest uppercase rounded-full">
+                        Experiencia que Transforma
+                    </div>
+                    <h2 class="font-serif text-4xl md:text-5xl font-bold text-muisca-green italic leading-tight">Liderazgo Institucional con Raíz Ancestral</h2>
+                    <p class="text-muisca-slate text-lg leading-relaxed">
+                        Mujer Muysca. Lideresa desde los 13 años.<br><br>
+                        Más de dos décadas construyendo Plan de Vida junto a jóvenes, niños y mujeres de su comunidad. 16 años en la ONIC defendiendo los derechos de los pueblos indígenas: Consulta Previa, Mesa de Concertación, Minga Nacional por la Vida y la Paz.<br><br>
+                        <strong class="text-muisca-green">Experiencia que transforma.</strong>
+                    </p>
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="flex items-center space-x-4 p-4 border border-muisca-cream rounded-sm">
+                            <i data-lucide="award" class="text-muisca-gold w-6 h-6"></i>
+                            <span class="text-sm font-semibold text-muisca-green uppercase tracking-wide">Mesa Permanente de Concertación (MPC)</span>
+                        </div>
+                        <div class="flex items-center space-x-4 p-4 border border-muisca-cream rounded-sm">
+                            <i data-lucide="book" class="text-muisca-gold w-6 h-6"></i>
+                            <span class="text-sm font-semibold text-muisca-green uppercase tracking-wide">Especialista en Consulta Previa</span>
+                        </div>
+                    </div>
+                    <a href="https://raw.githubusercontent.com/viviana-suarez/gobernadora_2026/main/CV.%20SANDRA%20VIVIANA%20SUA%CC%81REZ%20MIRANDA-2026.pdf"
+                       download
+                       class="group inline-flex items-center space-x-3 text-muisca-terra hover:text-muisca-gold font-bold text-sm transition-all">
+                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                        <span>Ver Hoja de Vida Completa (PDF)</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+                <div class="relative">
+                    <div class="bg-muisca-green text-white p-12 shadow-2xl relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 opacity-10 text-[12rem] font-serif">"</div>
+                        <p class="font-serif text-3xl italic leading-relaxed relative z-10">
+                            "Es tiempo de sembrar lo que somos para cosechar el futuro que nuestro pueblo merece."
+                        </p>
+                        <div class="mt-10 flex items-center space-x-4">
+                            <div class="h-px w-10 bg-muisca-gold"></div>
+                            <span class="text-muisca-gold font-bold uppercase text-xs tracking-widest">Viviana Suárez Miranda</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLAN DE GOBIERNO (INTERACTIVO) -->
+    <section id="plan" class="py-24 bg-muisca-green text-white overflow-hidden">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 space-y-4">
+                <h2 class="font-serif text-5xl font-bold italic">Dimensiones del Buen Gobierno</h2>
+                <p class="text-muisca-gold/80 max-w-2xl mx-auto uppercase tracking-widest text-[10px] font-bold">Un plan equilibrado basado en la Ley de Origen</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <!-- Radar Chart -->
+                <div class="bg-white/5 backdrop-blur-sm p-10 rounded-sm border border-white/10 shadow-inner">
+                    <div class="chart-container">
+                        <canvas id="planRadar"></canvas>
+                    </div>
+                    <div class="mt-8 text-center text-[10px] uppercase tracking-[0.3em] text-muisca-gold opacity-60">
+                        Equilibrio Institucional y Comunitario
+                    </div>
+                </div>
+
+                <!-- Detalle de Ejes -->
+                <div class="space-y-4" id="ejesContainer">
+                    <div id="ejeCard" class="bg-white p-10 rounded-sm text-muisca-dark shadow-2xl transition-all duration-500 border-l-[6px] border-muisca-gold">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <i data-lucide="landmark" id="ejeIcon" class="text-muisca-terra w-6 h-6"></i>
+                            <h3 id="ejeTitulo" class="font-serif text-3xl font-bold text-muisca-green">Justicia Propia</h3>
+                        </div>
+                        <p id="ejeDesc" class="text-muisca-slate mb-8 text-lg">Reestructuración de los Mandos, Normas y Leyes del Resguardo que regulan la administración y funcionamiento del territorio mediante un Código de Justicia Propia que armonice con la Ley de Origen.</p>
+
+                        <div class="p-6 bg-muisca-cream rounded-sm">
+                            <h4 class="text-[10px] font-bold uppercase tracking-widest text-muisca-terra mb-2">Meta Principal</h4>
+                            <p id="ejeMeta" class="text-muisca-green font-bold tracking-tight">Código de Justicia Propia formulado participativamente y aprobado por la Asamblea.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Menú de Selección Rápida -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 pt-4">
+                        <button onclick="updateEje(0)" class="px-4 py-3 bg-white/10 hover:bg-white/20 rounded-sm text-[10px] uppercase font-bold transition-all">Justicia</button>
+                        <button onclick="updateEje(1)" class="px-4 py-3 bg-white/10 hover:bg-white/20 rounded-sm text-[10px] uppercase font-bold transition-all">Economía</button>
+                        <button onclick="updateEje(2)" class="px-4 py-3 bg-white/10 hover:bg-white/20 rounded-sm text-[10px] uppercase font-bold transition-all">Territorio</button>
+                        <button onclick="updateEje(3)" class="px-4 py-3 bg-white/10 hover:bg-white/20 rounded-sm text-[10px] uppercase font-bold transition-all">Saneamiento</button>
+                        <button onclick="updateEje(4)" class="px-4 py-3 bg-white/10 hover:bg-white/20 rounded-sm text-[10px] uppercase font-bold transition-all">Seguridad</button>
+                        <button onclick="updateEje(5)" class="px-4 py-3 bg-white/10 hover:bg-white/20 rounded-sm text-[10px] uppercase font-bold transition-all">Cultura</button>
+                        <button onclick="updateEje(6)" class="px-4 py-3 bg-white/10 hover:bg-white/20 rounded-sm text-[10px] uppercase font-bold transition-all">Gobierno</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERÍA (INSTAGRAM SELECTION) -->
+    <section id="galeria" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 border-b border-muisca-cream pb-8">
+                <div class="space-y-2">
+                    <h2 class="font-serif text-4xl font-bold text-muisca-green tracking-tighter uppercase">Bitácora de Territorio</h2>
+                    <p class="text-muisca-slate italic">Acciones, encuentros y presencia constante.</p>
+                </div>
+                <a href="https://www.instagram.com/vivianamuiscasuarez/" target="_blank" class="px-8 py-3 border border-muisca-terra text-muisca-terra text-[10px] font-bold tracking-widest hover:bg-muisca-terra hover:text-white transition-all uppercase">
+                    Instagram Oficial
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Foto 1 -->
+                <div class="group relative aspect-[4/5] bg-muisca-cream overflow-hidden">
+                    <img src="fotos/WhatsApp Image 2026-01-06 at 4.40.07 PM.jpeg" alt="Liderazgo" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700">
+                    <div class="absolute bottom-0 left-0 p-6 w-full translate-y-full group-hover:translate-y-0 transition-transform bg-muisca-green/90 text-white">
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-muisca-gold">Gestión</p>
+                        <h4 class="font-serif text-xl">Presencia Institucional</h4>
+                    </div>
+                </div>
+                <!-- Foto 2 -->
+                <div class="group relative aspect-[4/5] bg-muisca-cream overflow-hidden">
+                    <img src="fotos/WhatsApp Image 2026-01-06 at 4.41.11 PM.jpeg" alt="Territorio" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700">
+                    <div class="absolute bottom-0 left-0 p-6 w-full translate-y-full group-hover:translate-y-0 transition-transform bg-muisca-green/90 text-white">
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-muisca-gold">Territorio</p>
+                        <h4 class="font-serif text-xl">Raíces Ancestrales</h4>
+                    </div>
+                </div>
+                <!-- Foto 3 -->
+                <div class="group relative aspect-[4/5] bg-muisca-cream overflow-hidden">
+                    <img src="fotos/WhatsApp Image 2026-01-06 at 4.42.27 PM.jpeg" alt="Comunidad" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700">
+                    <div class="absolute bottom-0 left-0 p-6 w-full translate-y-full group-hover:translate-y-0 transition-transform bg-muisca-green/90 text-white">
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-muisca-gold">Comunidad</p>
+                        <h4 class="font-serif text-xl">Tejido Social Vivo</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DOCUMENTOS OFICIALES -->
+    <section id="documentos" class="py-20 bg-muisca-cream">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="font-serif text-4xl font-bold text-muisca-green mb-4">Documentos Oficiales</h2>
+                    <p class="text-muisca-slate italic">Conoce en detalle la trayectoria y propuestas de Viviana Suárez</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- CV Download Card -->
+                    <a href="https://raw.githubusercontent.com/viviana-suarez/gobernadora_2026/main/CV.%20SANDRA%20VIVIANA%20SUA%CC%81REZ%20MIRANDA-2026.pdf"
+                       download
+                       class="group bg-white p-8 rounded-sm border-2 border-muisca-cream hover:border-muisca-gold transition-all duration-300 shadow-lg hover:shadow-2xl transform hover:-translate-y-1">
+                        <div class="flex items-start space-x-6">
+                            <div class="w-16 h-16 bg-muisca-green rounded-sm flex items-center justify-center flex-shrink-0 group-hover:bg-muisca-terra transition-colors">
+                                <i data-lucide="file-text" class="text-white w-8 h-8"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-serif text-2xl font-bold text-muisca-green mb-2 group-hover:text-muisca-terra transition-colors">Hoja de Vida</h3>
+                                <p class="text-muisca-slate text-sm mb-4">Experiencia profesional y trayectoria completa de Sandra Viviana Suárez Miranda</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] uppercase tracking-widest font-bold text-muisca-slate">PDF • 1.8 MB</span>
+                                    <div class="flex items-center space-x-2 text-muisca-terra font-bold text-sm">
+                                        <span>Descargar</span>
+                                        <i data-lucide="download" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Plan de Gobierno Download Card -->
+                    <a href="https://raw.githubusercontent.com/viviana-suarez/gobernadora_2026/main/plan-gobierno-viviana-suarez.docx"
+                       download
+                       class="group bg-white p-8 rounded-sm border-2 border-muisca-cream hover:border-muisca-gold transition-all duration-300 shadow-lg hover:shadow-2xl transform hover:-translate-y-1">
+                        <div class="flex items-start space-x-6">
+                            <div class="w-16 h-16 bg-muisca-green rounded-sm flex items-center justify-center flex-shrink-0 group-hover:bg-muisca-terra transition-colors">
+                                <i data-lucide="file-check" class="text-white w-8 h-8"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-serif text-2xl font-bold text-muisca-green mb-2 group-hover:text-muisca-terra transition-colors">Plan de Gobierno</h3>
+                                <p class="text-muisca-slate text-sm mb-4">Propuesta completa con los 7 ejes programáticos para el Resguardo Indígena Muysca</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] uppercase tracking-widest font-bold text-muisca-slate">DOCX • 13 KB</span>
+                                    <div class="flex items-center space-x-2 text-muisca-terra font-bold text-sm">
+                                        <span>Descargar</span>
+                                        <i data-lucide="download" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="mt-10 text-center">
+                    <p class="text-xs text-muisca-slate opacity-60 italic">
+                        Documentos oficiales de la candidatura • Descarga gratuita
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER / CIERRE ACTUALIZADO -->
+    <footer id="voto" class="bg-muisca-dark text-white py-24 border-t border-muisca-gold/20 relative overflow-hidden">
+        <div class="container mx-auto px-6 text-center space-y-12">
+            <div class="space-y-6">
+                <div class="w-20 h-20 bg-muisca-terra rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl">
+                    <i data-lucide="check-circle" class="w-10 h-10 text-white"></i>
+                </div>
+                <h2 class="font-serif text-6xl md:text-7xl font-bold tracking-tight leading-none italic">
+                    Consolidemos el futuro
+                </h2>
+                <p class="text-muisca-gold tracking-[0.5em] uppercase text-xs font-bold pt-4">Viviana Suárez Gobernadora 2026</p>
+            </div>
+
+            <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-8 text-sm pt-8">
+                <div class="p-10 border border-white/5 bg-white/5 rounded-sm">
+                    <h5 class="font-bold text-muisca-gold mb-3 uppercase tracking-widest">Cuándo</h5>
+                    <p class="opacity-60 italic font-serif text-lg">Este Domingo</p>
+                    <p class="opacity-60 font-bold uppercase text-[10px] mt-2">8:00 AM — 4:00 PM</p>
+                </div>
+                <div class="p-10 border border-white/5 bg-white/5 rounded-sm">
+                    <h5 class="font-bold text-muisca-gold mb-3 uppercase tracking-widest">Dónde</h5>
+                    <p class="opacity-60 italic font-serif text-lg">Casa de Gobierno</p>
+                    <p class="opacity-60 font-bold uppercase text-[10px] mt-2">Resguardo Indígena Muisca</p>
+                </div>
+                <div class="p-10 border border-white/5 bg-white/5 rounded-sm">
+                    <h5 class="font-bold text-muisca-gold mb-3 uppercase tracking-widest">Cómo</h5>
+                    <p class="opacity-60 italic font-serif text-lg">Marca el Tarjetón</p>
+                    <p class="opacity-60 font-bold uppercase text-[10px] mt-2">Sandra Viviana Suárez</p>
+                </div>
+            </div>
+
+            <div class="pt-20 border-t border-white/10 flex flex-col md:flex-row justify-between items-center opacity-40 text-[9px] tracking-[0.3em] uppercase font-bold">
+                <p>© 2026 Viviana Suárez Miranda — Armonía es Autonomía</p>
+                <div class="flex space-x-10 mt-6 md:mt-0">
+                    <a href="https://www.instagram.com/vivianamuiscasuarez/" class="hover:text-muisca-gold transition-colors">Instagram</a>
+                    <a href="#" class="hover:text-muisca-gold transition-colors">WhatsApp</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Inicializar Iconos de Lucide
+        lucide.createIcons();
+
+        // Data de los Ejes Estratégicos
+        const ejes = [
+            {
+                title: "Justicia Propia",
+                icon: "landmark",
+                desc: "Reestructuración de los Mandos, Normas y Leyes del Resguardo que regulan la administración y funcionamiento del territorio mediante un Código de Justicia Propia que armonice con la Ley de Origen.",
+                meta: "Código de Justicia Propia formulado participativamente y aprobado por la Asamblea."
+            },
+            {
+                title: "Economía Propia",
+                icon: "sprout",
+                desc: "Desarrollar la economía propia a través del turismo comunitario y cultura desde el enfoque de género y generacional, generando alternativas económicas sostenibles que fortalezcan la identidad Muysca.",
+                meta: "Programa de turismo comunitario operando con participación de familias del Resguardo."
+            },
+            {
+                title: "Territorio y Ambiente",
+                icon: "mountain",
+                desc: "Fortalecer la autoridad ambiental indígena para la protección del territorio ancestral, los humedales, cerros y sitios sagrados frente a la urbanización y el extractivismo.",
+                meta: "Sistema de protección ambiental comunitario articulado con las autoridades del SINA."
+            },
+            {
+                title: "Saneamiento Básico e Infraestructura",
+                icon: "home",
+                desc: "Gestionar el mejoramiento y acceso de las vías y de alcantarillado del Resguardo, mejoramiento de vivienda, garantizando conectividad y condiciones dignas para todas las familias.",
+                meta: "Plan de mejoramiento vial ejecutado en las zonas prioritarias identificadas."
+            },
+            {
+                title: "Seguridad Comunitaria",
+                icon: "shield",
+                desc: "Implementar un sistema de monitoreo y seguridad comunitaria liderado por la Guardia Indígena, fortaleciendo su capacidad de respuesta y articulación.",
+                meta: "Guardia Indígena fortalecida con sistema de comunicación y protocolo de actuación."
+            },
+            {
+                title: "Cultura e Identidad",
+                icon: "flame",
+                desc: "Fortalecer la cultura propia mediante programas de revitalización de la lengua Muysc cubun, las prácticas tradicionales y la transmisión de saberes ancestrales.",
+                meta: "Escuela de lengua Muysccubun funcionando con participación intergeneracional."
+            },
+            {
+                title: "Gobierno y Sabiduría Ancestral",
+                icon: "book-open",
+                desc: "Consolidar el Consejo de Mayores como instancia de orientación espiritual y política del Resguardo, garantizando que la sabiduría ancestral guíe las decisiones de gobierno.",
+                meta: "Consejo de Mayores fortalecido, con participación activa en las decisiones del Cabildo."
+            }
+        ];
+
+        // Función para actualizar contenido dinámico
+        function updateEje(index) {
+            const eje = ejes[index];
+            const card = document.getElementById('ejeCard');
+            
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(10px)';
+            
+            setTimeout(() => {
+                document.getElementById('ejeTitulo').innerText = eje.title;
+                document.getElementById('ejeDesc').innerText = eje.desc;
+                document.getElementById('ejeMeta').innerText = eje.meta;
+                
+                // Actualizar icono Lucide (necesita reinicio de librería)
+                const iconEl = document.getElementById('ejeIcon');
+                iconEl.setAttribute('data-lucide', eje.icon);
+                lucide.createIcons();
+                
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 300);
+        }
+
+        // Gráfico Radar (Chart.js)
+        const ctx = document.getElementById('planRadar').getContext('2d');
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Justicia Propia', 'Economía Propia', 'Territorio y Ambiente', 'Saneamiento', 'Seguridad', 'Cultura', 'Gobierno'],
+                datasets: [{
+                    label: 'Propuesta de Gobierno',
+                    data: [95, 88, 92, 85, 90, 94, 91],
+                    backgroundColor: 'rgba(212, 168, 85, 0.2)',
+                    borderColor: '#D4A855',
+                    pointBackgroundColor: '#C65D3B',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#D4A855'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(255,255,255,0.1)' },
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        pointLabels: {
+                            color: '#F5F0E6',
+                            font: { family: 'Source Sans Pro', size: 10, weight: 'bold' }
+                        },
+                        ticks: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // Scroll Reveal Animation
+        window.addEventListener('scroll', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => {
+                const windowHeight = window.innerHeight;
+                const revealTop = el.getBoundingClientRect().top;
+                if (revealTop < windowHeight - 150) {
+                    el.classList.add('active');
+                }
+            });
+        });
+
+        // Navegación Básica
+        function toggleMenu() {
+            // Implementación lógica para menú móvil si se requiere ampliar
+            console.log("Menu Toggle");
+        }
+    </script>
+</body>
+</html>
